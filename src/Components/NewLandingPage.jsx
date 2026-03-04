@@ -43,11 +43,15 @@ export default function NewLandingPage() {
       if (result.success) {
         navigate(`/users/${result.user.id}/userdashboard`);
       } else {
-        setError(result.error || "Failed to Sign in. Try Again Please :(");
+        const msg = result.error;
+        if (msg === "Invalid credentials") {
+          setError("The combination of username/email and password does not match. Please try again.");
+        } else {
+          setError(msg || "Failed to Sign in. Try Again Please :(");
+        }
       }
       reset();
     } catch (error) {
-      console.error("Error signing in: ", error);
       setError(
         error.response?.data?.message || "Failed to sign in. Please try again."
       );

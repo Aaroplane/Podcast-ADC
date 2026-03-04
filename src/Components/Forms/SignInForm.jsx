@@ -43,7 +43,6 @@ export default function SignIn() {
       }
       reset();
     } catch (error) {
-      console.error("Error signing in: ", error);
       setError("Failed to sign in. Please try again.");
     } finally {
       setIsLoading(false);

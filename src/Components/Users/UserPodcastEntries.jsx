@@ -33,7 +33,6 @@ export default function UserPodcastEntries({podcastEntries, setPodcastEntries}) 
         prev.filter((podcast) => podcast.id !== podcastId)
       );
     } catch (error) {
-      console.error("Error deleting podcast:", error);
       setError("Failed to delete podcast");
     }
   };
@@ -47,24 +46,16 @@ export default function UserPodcastEntries({podcastEntries, setPodcastEntries}) 
       <StyledContainer className="entry_container">
         <h1>{user.firstName}'s Podcasts</h1>
         <p>No Podcasts yet. Create your first one!</p>
-        {/* <StyledButton onClick={refreshPodcasts}>
-          Refresh
-        </StyledButton> */}
       </StyledContainer>
     );
   }
-  UserPodcastEntries.propTypes = {
-  user: PropTypes.object.isRequired,
-  userPodcast: PropTypes.array,
-  podcastEntries: PropTypes.array.isRequired,
-};
   return (
     <div className="entry_container">
       <Container className="accordian_container">
          <div>
           <Typography className="accordian-title">Podcast Library</Typography>
       {podcastEntries.map((podcast, index) => (
-        <Accordion className="accordian-item" key={index}>
+        <Accordion className="accordian-item" key={podcast.id}>
           <AccordionSummary className="accordian-summary"
             expandIcon={<ExpandMoreIcon />}
             aria-controls={`panel-content-${index}`}
@@ -98,3 +89,8 @@ export default function UserPodcastEntries({podcastEntries, setPodcastEntries}) 
     </div>
   );
 }
+
+UserPodcastEntries.propTypes = {
+  podcastEntries: PropTypes.array.isRequired,
+  setPodcastEntries: PropTypes.func.isRequired,
+};

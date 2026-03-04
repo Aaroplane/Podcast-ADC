@@ -23,7 +23,6 @@ export function AuthProvider({ children }) {
         setUser(parsedUser);
       }
     } catch (error) {
-      console.error("Auth check failed:", error);
       localStorage.removeItem("token");
       localStorage.removeItem("refreshToken");
       localStorage.removeItem("user");
@@ -44,7 +43,6 @@ export function AuthProvider({ children }) {
         return { success: true, user };
       }
     } catch (error) {
-      console.error("Login error:", error);
       return {
         success: false,
         error:

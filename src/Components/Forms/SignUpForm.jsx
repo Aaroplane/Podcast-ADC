@@ -66,9 +66,8 @@ export default function SignUp() {
 
       setTimeout(() => {
         navigate(`/users/${user.id}/userdashboard`);
-      }, [3000]);
+      }, 3000);
     } catch (error) {
-      console.error("Error creating user:", error);
       const resData = error.response?.data;
       if (resData?.details?.length) {
         setError(resData.details.map((d) => d.message).join(". "));
@@ -83,13 +82,6 @@ export default function SignUp() {
       setIsLoading(false);
     }
   };
-
-  // const formatPhoneNumber = (value) => {
-  //   if (value.length === 10) {
-  //     return value.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
-  //   }
-  // };
-
 
   return (
     <div className="signup-page">
@@ -162,12 +154,14 @@ export default function SignUp() {
               })}
               error={!!errors.email}
               helperText={errors.email?.message || ""}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Email sx={{ color: "#6c757d" }} />
-                  </InputAdornment>
-                ),
+              slotProps={{
+                input: {
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Email sx={{ color: "#6c757d" }} />
+                    </InputAdornment>
+                  ),
+                },
               }}
             />
           </StyledBox>
@@ -218,23 +212,25 @@ export default function SignUp() {
               helperText={
                 errors.password?.message || "Strong password recommended"
               }
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Lock sx={{ color: "#6c757d" }} />
-                  </InputAdornment>
-                ),
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={togglePasswordVisibility}
-                      edge="end"
-                      tabIndex={-1}
-                    >
-                      {showPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
+              slotProps={{
+                input: {
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Lock sx={{ color: "#6c757d" }} />
+                    </InputAdornment>
+                  ),
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={togglePasswordVisibility}
+                        edge="end"
+                        tabIndex={-1}
+                      >
+                        {showPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                },
               }}
             />
           </StyledBox>
@@ -253,23 +249,25 @@ export default function SignUp() {
               })}
               error={!!errors.confirmPassword}
               helperText={errors.confirmPassword?.message || ""}
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Lock sx={{ color: "#6c757d" }} />
-                  </InputAdornment>
-                ),
-                endAdornment: (
-                  <InputAdornment position="end">
-                    <IconButton
-                      onClick={toggleConfirmPasswordVisibility}
-                      edge="end"
-                      tabIndex={-1}
-                    >
-                      {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
-                    </IconButton>
-                  </InputAdornment>
-                ),
+              slotProps={{
+                input: {
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Lock sx={{ color: "#6c757d" }} />
+                    </InputAdornment>
+                  ),
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        onClick={toggleConfirmPasswordVisibility}
+                        edge="end"
+                        tabIndex={-1}
+                      >
+                        {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                },
               }}
             />
           </StyledBox>

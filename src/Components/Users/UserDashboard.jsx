@@ -283,7 +283,7 @@ const PodcastDashboard = () => {
         );
         setPodcastEntries(response.data);
       } catch (error) {
-        console.error("Error fetching podcast entries:", error);
+        // Error already handled via UI state
       }
     };
 

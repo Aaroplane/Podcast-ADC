@@ -85,17 +85,6 @@ const Contact = () => {
                     >
                       Send Email
                     </Button>
-                    {/* Doesn't work. working on adding this button */}
-                    {/* <a
-                      href="https://drive.google.com/uc?export=download&id=1zs2An0qqG2m4n8oF2224l1VIMaAwuBEFyVhK8nzR_WE"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{ textDecoration: "none" }}
-                    >
-                      <Button variant="outline" className="download-cv-btn">
-                        Download CV
-                      </Button>
-                    </a> */}
                   </Box>
                 </CardContent>
               </Card>

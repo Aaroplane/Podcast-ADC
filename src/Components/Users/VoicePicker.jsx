@@ -19,7 +19,7 @@ const roleLabels = {
 
 export default function VoicePicker({ speakers, selectedVoices, onVoiceChange }) {
   const { user } = useAuth();
-  const [voices, setVoices] = useState(null);
+  const [voiceData, setVoiceData] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -28,7 +28,7 @@ export default function VoicePicker({ speakers, selectedVoices, onVoiceChange })
         const response = await api.get(
           `/users/${user.id}/podcastentries/audio/voices`
         );
-        setVoices(response.data);
+        setVoiceData(response.data);
       } catch (err) {
         // Silently fail — voice picker is optional
       } finally {
@@ -47,7 +47,7 @@ export default function VoicePicker({ speakers, selectedVoices, onVoiceChange })
     );
   }
 
-  if (!voices) return null;
+  if (!voiceData || !voiceData.voices) return null;
 
   const speakerCount = Number(speakers) || 1;
   const rolesToShow =
@@ -69,14 +69,14 @@ export default function VoicePicker({ speakers, selectedVoices, onVoiceChange })
               {roleLabels[role]}
             </Typography>
             <Select
-              value={selectedVoices[role] || voices[role] || ""}
+              value={selectedVoices[role] || voiceData.roles?.[role] || voiceData.default || ""}
               onChange={(e) => onVoiceChange(role, e.target.value)}
               size="small"
               className="voice-select"
             >
-              {Object.entries(voices).map(([key, voiceName]) => (
-                <MenuItem key={key} value={voiceName}>
-                  {key.charAt(0).toUpperCase() + key.slice(1)} — {voiceName}
+              {voiceData.voices.map((voice) => (
+                <MenuItem key={voice.key} value={voice.key}>
+                  {voice.label} — {voice.accent} ({voice.gender})
                 </MenuItem>
               ))}
             </Select>
