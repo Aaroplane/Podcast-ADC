@@ -1,0 +1,41 @@
+.voice-picker-loading {
+  display: flex;
+  justify-content: center;
+  padding: 8px;
+}
+
+.voice-picker {
+  .field-label {
+    font-weight: 500;
+    margin-bottom: 12px;
+  }
+
+  .voice-selectors {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .voice-select-control {
+    .voice-role-label {
+      color: #666;
+      font-size: 0.85rem;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .voice-select {
+      border-radius: 8px;
+    }
+  }
+}
+
+@media (min-width: 600px) {
+  .voice-picker {
+    .voice-selectors {
+      flex-direction: row;
+      gap: 16px;
+    }
+  }
+}

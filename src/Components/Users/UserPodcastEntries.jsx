@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
+import api from "../../utils/api";
 import {
   StyledButton,
   StyledTypography,
@@ -24,24 +24,16 @@ import PropTypes from 'prop-types';
 
 export default function UserPodcastEntries({podcastEntries, setPodcastEntries}) {
   const { user } = useAuth();
-  const API = import.meta.env.VITE_BASE_URL;
   const [error, setError] = useState(null);
 
   const deletePodcast = async (podcastId) => {
-    const token = localStorage.getItem("token");
     try {
-      const response = await axios.delete(
-        `${API}/users/${user.id}/podcastentries/${podcastId}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      console.log(response.data.message);
+      await api.delete(`/users/${user.id}/podcastentries/${podcastId}`);
       setPodcastEntries((prev) =>
         prev.filter((podcast) => podcast.id !== podcastId)
       );
     } catch (error) {
-      console.log("Error Deleting: ", error);
+      console.error("Error deleting podcast:", error);
       setError("Failed to delete podcast");
     }
   };
@@ -84,7 +76,6 @@ export default function UserPodcastEntries({podcastEntries, setPodcastEntries}) 
             <Typography>{podcast.description}</Typography>
             {podcast.audio_url && (
               <audio controls style={{ width: "100%", marginTop: "10px" }}>
-                {console.log("Line 95 UPE Url: ", podcast.url)}
                 <source src={podcast.audio_url} type="audio/mpeg" />
                 Your browser does not support the audio element.
               </audio>

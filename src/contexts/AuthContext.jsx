@@ -1,9 +1,8 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import api, { setLogoutHandler } from "../utils/api";
 
 const AuthContext = createContext();
-const API = import.meta.env.VITE_BASE_URL;
 
 export function AuthProvider({ children }) {
   const navigate = useNavigate();
@@ -11,14 +10,14 @@ export function AuthProvider({ children }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    checkAuthStatus();    
+    checkAuthStatus();
   }, []);
 
   const checkAuthStatus = () => {
     try {
       const token = localStorage.getItem("token");
       const userData = localStorage.getItem("user");
-  
+
       if (token && userData) {
         const parsedUser = JSON.parse(userData);
         setUser(parsedUser);
@@ -26,6 +25,7 @@ export function AuthProvider({ children }) {
     } catch (error) {
       console.error("Auth check failed:", error);
       localStorage.removeItem("token");
+      localStorage.removeItem("refreshToken");
       localStorage.removeItem("user");
     } finally {
       setLoading(false);
@@ -34,13 +34,13 @@ export function AuthProvider({ children }) {
 
   const login = async (credentials) => {
     try {
-      const response = await axios.post(`${API}/login`, credentials);
+      const response = await api.post("/login", credentials);
       if (response.status === 200) {
-        const { token, user } = response.data;
+        const { token, refreshToken, user } = response.data;
         localStorage.setItem("token", token);
+        localStorage.setItem("refreshToken", refreshToken);
         localStorage.setItem("user", JSON.stringify(user));
         setUser(user);
-        console.log("Login successful");
         return { success: true, user };
       }
     } catch (error) {
@@ -48,6 +48,7 @@ export function AuthProvider({ children }) {
       return {
         success: false,
         error:
+          error.response?.data?.error ||
           error.response?.data?.message ||
           "Failed to sign in. Please try again.",
       };
@@ -56,13 +57,37 @@ export function AuthProvider({ children }) {
 
   const isAuthenticated = !!user;
 
-  const logout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
-    localStorage.removeItem('script')
-    setUser(null);
-    navigate("/");
+  const logout = async () => {
+    try {
+      const refreshToken = localStorage.getItem("refreshToken");
+      if (refreshToken) {
+        await api.post("/auth/logout", { refreshToken });
+      }
+    } catch (error) {
+      // Logout API call failed — still clear local state
+    } finally {
+      localStorage.removeItem("token");
+      localStorage.removeItem("refreshToken");
+      localStorage.removeItem("user");
+      localStorage.removeItem("script");
+      setUser(null);
+      navigate("/");
+    }
   };
+
+  // Register the logout handler with the Axios interceptor so it can
+  // trigger a proper logout when a refresh token fails.
+  useEffect(() => {
+    setLogoutHandler(() => {
+      localStorage.removeItem("token");
+      localStorage.removeItem("refreshToken");
+      localStorage.removeItem("user");
+      localStorage.removeItem("script");
+      setUser(null);
+      navigate("/login");
+    });
+  }, [navigate]);
+
   return (
     <AuthContext.Provider
       value={{ isAuthenticated, login, logout, setUser, user, loading }}

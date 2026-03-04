@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import {
   Box,
@@ -10,7 +10,6 @@ import {
   Button,
   TextField,
   FormControl,
-  InputLabel,
   Select,
   MenuItem,
   Accordion,
@@ -20,6 +19,12 @@ import {
   CircularProgress,
   Paper,
   FormHelperText,
+  ListSubheader,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
 } from "@mui/material";
 import {
   Mic,
@@ -27,12 +32,15 @@ import {
   Delete,
   Download,
   ExpandMore,
+  Visibility,
 } from "@mui/icons-material";
-import axios from "axios";
+import api from "../../utils/api";
 import { useAuth } from "../../contexts/AuthContext";
-// import Loading from "../Loading";
+import SpeakerToneSelector from "./SpeakerToneSelector";
+import ConversationScriptRenderer from "./ConversationScriptRenderer";
+import DashboardStats from "./DashboardStats";
+import VoicePicker from "./VoicePicker";
 import "../../Styling/UserDashboardStyling.scss";
-const API = import.meta.env.VITE_BASE_URL;
 
 const PodcastDashboard = () => {
   const [podcastEntries, setPodcastEntries] = useState([]);
@@ -43,6 +51,9 @@ const PodcastDashboard = () => {
   const [error, setError] = useState("");
   const [audioUrl, setAudioUrl] = useState("");
   const [text, setText] = useState(null);
+  const [deleteConfirm, setDeleteConfirm] = useState({ open: false, id: null, title: "" });
+  const [viewingScript, setViewingScript] = useState(null);
+  const [selectedVoices, setSelectedVoices] = useState({});
 
   const {
     register,
@@ -54,40 +65,59 @@ const PodcastDashboard = () => {
     defaultValues: {
       prompt: "",
       mood: "",
+      speakers: 1,
+      tone: "",
     },
   });
 
-  const moodOptions = [
-    "Conversational",
-    "Professional",
-    "Casual",
-    "Enthusiastic",
-    "Informative",
-    "Humorous",
-    "Serious",
-    "Inspirational",
+  const moodGroups = [
+    {
+      label: "Conversational",
+      moods: ["conversational", "casual", "lighthearted"],
+    },
+    {
+      label: "Professional",
+      moods: ["professional", "educational", "inspirational"],
+    },
+    {
+      label: "Creative",
+      moods: ["dramatic", "storytelling", "humorous"],
+    },
+    {
+      label: "Intense",
+      moods: ["investigative", "energetic", "suspenseful", "serious"],
+    },
+    {
+      label: "Calm",
+      moods: ["calm"],
+    },
   ];
 
   const onSubmit = async (data) => {
     setIsLoading(true);
     try {
-      const token = localStorage.getItem("token");
-      const response = await axios.post(
-        `${API}/users/${user.id}/podcastentries/script`,
-        { podcastentry: data.prompt, mood: data.mood },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
+      const body = { podcastentry: data.prompt, mood: data.mood };
+      const speakerCount = Number(data.speakers) || 1;
+      if (speakerCount > 1) {
+        body.speakers = speakerCount;
+        body.tone = data.tone;
+      }
+
+      const response = await api.post(
+        `/users/${user.id}/podcastentries/script`,
+        body
       );
       setCurrentScript(response.data);
       setCurrentStep("script");
       setIsLoading(false);
       localStorage.setItem("script", JSON.stringify(response.data));
     } catch (error) {
-      console.error("An error occurred:", error);
+      const resData = error.response?.data;
+      if (resData?.details?.length) {
+        setError(resData.details.map((d) => d.message).join(". "));
+      } else {
+        setError(resData?.error || "Failed to generate script. Please try again.");
+      }
     } finally {
       setIsLoading(false);
       reset();
@@ -100,41 +130,78 @@ const PodcastDashboard = () => {
     setError("");
 
     try {
-      console.log("AG 40 - Request body:", { googleCloudTTS: text });
-      const token = localStorage.getItem("token");
-      const response = await axios.post(
-        `${API}/users/${user.id}/podcastentries/audio`,
+      // Step 1: Create entry in backend
+      const entryRes = await api.post(
+        `/users/${user.id}/podcastentries`,
         {
-          googleCloudTTS: text,
-        },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          responseType: "blob",
-        }
-      );
-      console.log(response);
-      console.log("Line: 45 - Text being sent back!:", text);
-
-      if (response.status === 200) {
-        const audioUrl = URL.createObjectURL(response.data);
-        setAudioUrl(audioUrl);
-
-        // Create new podcast entry with mood from form data
-        const newPodcast = {
           title: currentScript?.title || "Untitled Podcast",
           description: currentScript?.description || "No description",
-          mood: watch("mood"),
-          createdAt: new Date().toLocaleDateString(),
-          audio_url: audioUrl,
-        };
+          audio_url: "pending",
+        }
+      );
+      const entryId = entryRes.data.id;
 
-        setPodcastEntries((prev) => [newPodcast, ...prev]);
+      // Step 2: Save script to the entry
+      if (currentScript) {
+        const scriptPayload = Array.isArray(currentScript.turns)
+          ? currentScript
+          : {
+              title: currentScript.title,
+              description: currentScript.description,
+              introduction: currentScript.introduction,
+              mainContent: currentScript.mainContent,
+              conclusion: currentScript.conclusion,
+            };
+        await api.put(
+          `/users/${user.id}/podcastentries/${entryId}/script`,
+          scriptPayload
+        );
       }
+
+      // Step 3: Generate audio with entry_id for Cloudinary persistence
+      const isConversation = Array.isArray(currentScript?.turns);
+      let response;
+
+      if (isConversation) {
+        response = await api.post(
+          `/users/${user.id}/podcastentries/audio/conversation`,
+          { turns: currentScript.turns, entry_id: entryId },
+          { responseType: "blob" }
+        );
+      } else {
+        const audioBody = { text, entry_id: entryId };
+        if (selectedVoices.host) {
+          audioBody.voice = selectedVoices.host;
+        }
+        response = await api.post(
+          `/users/${user.id}/podcastentries/audio`,
+          audioBody,
+          { responseType: "blob" }
+        );
+      }
+
+      // Step 4: Handle dual response format
+      let finalAudioUrl;
+      const contentType = response.headers?.["content-type"] || "";
+
+      if (contentType.includes("application/json")) {
+        // Cloudinary response: JSON with audio_url
+        const text = await response.data.text();
+        const jsonData = JSON.parse(text);
+        finalAudioUrl = jsonData.audio_url;
+      } else {
+        // Blob response: create object URL
+        finalAudioUrl = URL.createObjectURL(response.data);
+      }
+
+      setAudioUrl(finalAudioUrl);
+
+      // Step 5: Refresh entries from backend
+      const entriesRes = await api.get(
+        `/users/${user.id}/podcastentries`
+      );
+      setPodcastEntries(entriesRes.data);
     } catch (err) {
-      console.error("Error converting text to audio:", err);
       setError("Failed to convert text to audio. Please try again.");
     } finally {
       setIsLoading(false);
@@ -144,8 +211,24 @@ const PodcastDashboard = () => {
     }
   };
 
-  const deletePodcast = (id) => {
-    setPodcastEntries((prev) => prev.filter((p) => p.id !== id));
+  const deletePodcast = async (id) => {
+    try {
+      await api.delete(`/users/${user.id}/podcastentries/${id}`);
+      setPodcastEntries((prev) => prev.filter((p) => p.id !== id));
+    } catch (err) {
+      setError("Failed to delete podcast. Please try again.");
+    } finally {
+      setDeleteConfirm({ open: false, id: null, title: "" });
+    }
+  };
+
+  const handleDownload = (podcast) => {
+    const a = document.createElement("a");
+    a.href = podcast.audio_url;
+    a.download = `${podcast.title || "podcast"}.mp3`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
   };
 
   const resetToForm = () => {
@@ -154,32 +237,49 @@ const PodcastDashboard = () => {
     setIsLoading(false);
   };
 
+  const handleViewScript = async (entryId) => {
+    try {
+      const response = await api.get(
+        `/users/${user.id}/podcastentries/${entryId}/script`
+      );
+      setViewingScript(response.data);
+    } catch (err) {
+      setError("Failed to load script.");
+    }
+  };
+
+  const handleVoiceChange = (role, voice) => {
+    setSelectedVoices((prev) => ({ ...prev, [role]: voice }));
+  };
+
   const formData = watch();
 
   useEffect(() => {
     if (currentScript) {
-      const scriptString = `
-        ${currentScript.title || ""}
-        ${currentScript.description || ""}
-        ${currentScript.introduction || ""}
-        ${currentScript.mainContent || ""}
-        ${currentScript.conclusion || ""}
-      `.trim();
-      setText(scriptString);
+      if (Array.isArray(currentScript.turns)) {
+        // Multi-speaker: text is handled by /audio/conversation endpoint
+        const turnsText = currentScript.turns
+          .map((t) => `${t.speaker}: ${t.text}`)
+          .join("\n");
+        setText(turnsText);
+      } else {
+        const scriptString = `
+          ${currentScript.title || ""}
+          ${currentScript.description || ""}
+          ${currentScript.introduction || ""}
+          ${currentScript.mainContent || ""}
+          ${currentScript.conclusion || ""}
+        `.trim();
+        setText(scriptString);
+      }
     }
   }, [currentScript]);
 
   useEffect(() => {
     const fetchPodcastEntries = async () => {
       try {
-        const token = localStorage.getItem("token");
-        const response = await axios.get(
-          `${API}/users/${user.id}/podcastentries`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
+        const response = await api.get(
+          `/users/${user.id}/podcastentries`
         );
         setPodcastEntries(response.data);
       } catch (error) {
@@ -208,6 +308,11 @@ const PodcastDashboard = () => {
           </Typography>
         </Container>
       </Box>
+
+      {/* Dashboard Stats */}
+      <Container maxWidth="xl" sx={{ py: 2 }}>
+        <DashboardStats />
+      </Container>
 
       {/* Main Content */}
       <Container maxWidth="xl" className="main-content">
@@ -271,17 +376,34 @@ const PodcastDashboard = () => {
                         <MenuItem value="">
                           <em>Select the mood for your podcast</em>
                         </MenuItem>
-                        {moodOptions.map((mood) => (
-                          <MenuItem key={mood} value={mood}>
-                            {mood}
-                          </MenuItem>
-                        ))}
+                        {moodGroups.flatMap((group) => [
+                          <ListSubheader key={group.label}>
+                            {group.label}
+                          </ListSubheader>,
+                          ...group.moods.map((mood) => (
+                            <MenuItem key={mood} value={mood}>
+                              {mood.charAt(0).toUpperCase() + mood.slice(1)}
+                            </MenuItem>
+                          )),
+                        ])}
                       </Select>
                       {errors.mood && (
                         <FormHelperText>{errors.mood.message}</FormHelperText>
                       )}
                     </FormControl>
                   </Box>
+
+                  <SpeakerToneSelector
+                    register={register}
+                    watch={watch}
+                    errors={errors}
+                  />
+
+                  <VoicePicker
+                    speakers={formData.speakers}
+                    selectedVoices={selectedVoices}
+                    onVoiceChange={handleVoiceChange}
+                  />
 
                   <Button
                     type="submit"
@@ -312,18 +434,7 @@ const PodcastDashboard = () => {
                   </Box>
 
                   <Paper className="script-content">
-                    {Object.entries(currentScript).map(([key, value]) => (
-                      <Box key={key} className="script-section">
-                        <Typography variant="h6" className="section-title">
-                          {key.charAt(0).toUpperCase() +
-                            key.slice(1).replace(/([A-Z])/g, " $1")}
-                          :
-                        </Typography>
-                        <Typography variant="body1" className="section-content">
-                          {value}
-                        </Typography>
-                      </Box>
-                    ))}
+                    <ConversationScriptRenderer script={currentScript} />
                   </Paper>
 
                   <Box className="script-actions">
@@ -430,7 +541,13 @@ const PodcastDashboard = () => {
                             size="small"
                             variant="contained"
                             color="error"
-                            onClick={() => deletePodcast(podcast.id)}
+                            onClick={() =>
+                              setDeleteConfirm({
+                                open: true,
+                                id: podcast.id,
+                                title: podcast.title,
+                              })
+                            }
                             startIcon={<Delete />}
                           >
                             Delete
@@ -440,8 +557,19 @@ const PodcastDashboard = () => {
                               size="small"
                               variant="outlined"
                               startIcon={<Download />}
+                              onClick={() => handleDownload(podcast)}
                             >
                               Download
+                            </Button>
+                          )}
+                          {podcast.script_content && (
+                            <Button
+                              size="small"
+                              variant="outlined"
+                              startIcon={<Visibility />}
+                              onClick={() => handleViewScript(podcast.id)}
+                            >
+                              View Script
                             </Button>
                           )}
                         </Box>
@@ -454,6 +582,64 @@ const PodcastDashboard = () => {
           </Card>
         </Box>
       </Container>
+
+      {/* Error Alert */}
+      {error && (
+        <Box sx={{ position: "fixed", bottom: 24, left: 24, right: 24, zIndex: 1300 }}>
+          <Paper sx={{ p: 2, bgcolor: "#fdeded", border: "1px solid #f5c6cb", borderRadius: 2 }}>
+            <Typography color="error">{error}</Typography>
+            <Button size="small" onClick={() => setError("")} sx={{ mt: 1 }}>
+              Dismiss
+            </Button>
+          </Paper>
+        </Box>
+      )}
+
+      {/* View Script Dialog */}
+      <Dialog
+        open={!!viewingScript}
+        onClose={() => setViewingScript(null)}
+        maxWidth="md"
+        fullWidth
+      >
+        <DialogTitle>Saved Script</DialogTitle>
+        <DialogContent>
+          <ConversationScriptRenderer script={viewingScript} />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setViewingScript(null)}>Close</Button>
+        </DialogActions>
+      </Dialog>
+
+      {/* Delete Confirmation Dialog */}
+      <Dialog
+        open={deleteConfirm.open}
+        onClose={() => setDeleteConfirm({ open: false, id: null, title: "" })}
+      >
+        <DialogTitle>Delete Podcast</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to delete "{deleteConfirm.title}"? This action
+            cannot be undone.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={() =>
+              setDeleteConfirm({ open: false, id: null, title: "" })
+            }
+          >
+            Cancel
+          </Button>
+          <Button
+            onClick={() => deletePodcast(deleteConfirm.id)}
+            color="error"
+            variant="contained"
+          >
+            Delete
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };

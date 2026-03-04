@@ -10,7 +10,6 @@ import {
   ListItemText,
   useMediaQuery,
   useTheme,
-  LinkComponent,
 } from "@mui/material";
 import { useState, useEffect } from "react";
 import { Menu as MenuIcon, Close as CloseIcon } from "@mui/icons-material";
@@ -78,6 +77,13 @@ export default function NavBar() {
                 fullWidth
               >
                 Dashboard
+              </StyledButton>
+              <StyledButton
+                LinkComponent={Link}
+                to={`/users/${user.id}/profile`}
+                fullWidth
+              >
+                Profile
               </StyledButton>
               <StyledButton
                 onClick={() => {
@@ -171,6 +177,14 @@ export default function NavBar() {
                       fullWidth
                     >
                       Dashboard
+                    </StyledButton>
+                    <StyledButton
+                      LinkComponent={Link}
+                      to={`/users/${user.id}/profile`}
+                      sx={{ padding: "0.4em 2em " }}
+                      fullWidth
+                    >
+                      Profile
                     </StyledButton>
                     <StyledButton
                       onClick={() => {

@@ -6,10 +6,8 @@ import "../../Styling/SignUpStyling.scss";
 import { InputAdornment, IconButton, Alert, Paper } from "@mui/material";
 import { Visibility, VisibilityOff, Email, Lock } from "@mui/icons-material";
 import TextField from "@mui/material/TextField";
-import axios from "axios";
+import api from "../../utils/api";
 import { useAuth } from "../../contexts/AuthContext";
-
-const API = import.meta.env.VITE_BASE_URL;
 
 export default function SignUp() {
   const { setUser } = useAuth();
@@ -52,8 +50,7 @@ export default function SignUp() {
     };
 
     try {
-      const response = await axios.post(`${API}/users`, formattedData);
-      console.log("User created successfully: ", response.data);
+      const response = await api.post("/users", formattedData);
 
       reset({
         first_name: "",
@@ -67,10 +64,9 @@ export default function SignUp() {
         date_of_birth: "",
       });
 
-      const { token, user, message } = response.data;
+      const { token, refreshToken, user } = response.data;
       localStorage.setItem("token", token);
-      console.log("Message Received Sign Up: ", message);
-      
+      localStorage.setItem("refreshToken", refreshToken);
       localStorage.setItem("user", JSON.stringify(user));
 
       setUser(user);
@@ -80,10 +76,14 @@ export default function SignUp() {
       }, [3000]);
     } catch (error) {
       console.error("Error creating user:", error);
-      setError(
-        error.response?.data?.message ||
-          "Error creating user. Please try again."
-      );
+      const resData = error.response?.data;
+      if (resData?.details?.length) {
+        setError(resData.details.map((d) => d.message).join(". "));
+      } else {
+        setError(
+          resData?.error || resData?.message || "Error creating user. Please try again."
+        );
+      }
     } finally {
       setIsLoading(false);
     }

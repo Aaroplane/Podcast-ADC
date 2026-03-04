@@ -8,13 +8,30 @@ import Contact from "./Components/Contact";
 import Footer from "./Components/Footer";
 import NewLandingPage from "./Components/NewLandingPage";
 import UserDashboard from "./Components/Users/UserDashboard";
+import UserProfile from "./Components/Users/UserProfile";
+import ProtectedRoute from "./Components/ProtectedRoute";
 
 export default function Apps() {
   return (
     <>
       <NavBar />
       <Routes>
-        <Route path="/users/:id/userdashboard" element={<UserDashboard />} />
+        <Route
+          path="/users/:id/userdashboard"
+          element={
+            <ProtectedRoute>
+              <UserDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/users/:id/profile"
+          element={
+            <ProtectedRoute>
+              <UserProfile />
+            </ProtectedRoute>
+          }
+        />
         <Route path="/login" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/about" element={<AboutUs />} />

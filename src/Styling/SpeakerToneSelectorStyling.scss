@@ -1,0 +1,64 @@
+.speaker-tone-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+
+  .field-label {
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  .speaker-radio-group {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .speaker-option {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 4px 12px;
+    margin: 0;
+    transition: all 0.2s ease;
+
+    &:hover {
+      border-color: rgb(93, 237, 245);
+      background: rgba(93, 237, 245, 0.05);
+    }
+  }
+
+  .speaker-radio {
+    color: rgb(29, 58, 138);
+
+    &.Mui-checked {
+      color: rgb(93, 237, 245);
+    }
+  }
+
+  .tone-field {
+    animation: fadeIn 0.3s ease-in;
+  }
+
+  .select-field {
+    border-radius: 8px;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (max-width: 600px) {
+  .speaker-tone-selector {
+    .speaker-radio-group {
+      flex-direction: column;
+    }
+  }
+}
