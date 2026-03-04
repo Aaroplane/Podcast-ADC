@@ -43,10 +43,6 @@ export default function SignUp() {
       username: data.username,
       password: data.password,
       email: data.email,
-      phone_number: "",
-      sex_at_birth: "",
-      gender_identity: "",
-      date_of_birth: "",
     };
 
     try {
@@ -57,11 +53,8 @@ export default function SignUp() {
         last_name: "",
         username: "",
         password: "",
+        confirmPassword: "",
         email: "",
-        phone_number: "",
-        sex_at_birth: "",
-        gender_identity: "",
-        date_of_birth: "",
       });
 
       const { token, refreshToken, user } = response.data;
@@ -79,9 +72,11 @@ export default function SignUp() {
       const resData = error.response?.data;
       if (resData?.details?.length) {
         setError(resData.details.map((d) => d.message).join(". "));
+      } else if (resData?.error?.toLowerCase().includes("already exists")) {
+        setError("An account with this email or username already exists. Please try a different one.");
       } else {
         setError(
-          resData?.error || resData?.message || "Error creating user. Please try again."
+          resData?.error || resData?.message || "Account creation failed. Please check your information and try again."
         );
       }
     } finally {
