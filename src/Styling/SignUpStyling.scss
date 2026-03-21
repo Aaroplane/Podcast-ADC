@@ -1,117 +1,189 @@
+@use 'variables' as *;
+@use 'animations';
+
 .signup-page {
   display: grid;
   place-items: center;
-  height: 100vh;
-  width: 100vw;
-  padding-bottom: 100px;
+  min-height: 100vh;
+  width: 100%;
+  padding: 2rem 1rem;
   background-image: url("../assets/CCPSignUPPhoto.png");
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+  background-color: $bg-warm;
+
+  @media (max-width: $bp-md) {
+    padding: 1.5rem 1rem;
+  }
+
+  @media (max-width: $bp-sm) {
+    background-attachment: scroll;
+  }
 }
 
-.form_display_container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  box-sizing: border-box;
-  width: 100% !important;
-  background: linear-gradient(135deg, #f0e5c6 0%, #ebe7dd 100%);
-}
-
-.form-header {
+.signup-page .form-header {
   padding-top: 2em;
+  margin: 0;
+  text-align: center;
 
-  margin: 0 !important;
+  @media (max-width: $bp-sm) { padding-top: 1em; }
 
   .form-title {
-    font-family: "Akronim", sans-serif;
-    font-size: 2.5em;
+    font-family: $font-accent;
+    font-size: clamp(1.6em, 5vw, 2.5em);
+    color: $cyan;
+    text-shadow: white 0px 0px 10px;
+    font-style: italic;
+    font-weight: bold;
     letter-spacing: 4px;
+    margin: 0;
+
+    @media (max-width: $bp-sm) {
+      font-size: 1.8em;
+    }
   }
 }
 
 .paper-container {
-  border-radius: 20px !important;
-  margin: 6em;
-  height: 80% !important;
-
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1) !important;
+  border-radius: $radius-xl;
+  margin: 2em auto;
+  width: 100%;
+  max-width: 960px;
+  padding: 2.5rem;
+  background: rgba(255, 255, 255, 0.744);
+  backdrop-filter: blur(10px);
+  box-shadow: $shadow-lg;
   animation: slideInRight 1.5s ease-out;
+
+  @media (max-width: $bp-md) {
+    margin: 1.5em auto;
+    padding: 2rem;
+  }
+
+  @media (max-width: $bp-sm) {
+    margin: 1em auto;
+    padding: 1.5rem;
+  }
 }
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+
+.form-field {
+  width: 100%;
+}
+
+.error-alert {
+  margin-bottom: 1.5rem;
+  border-radius: $radius-md;
 }
 
 .signup-input {
-  padding: 0 !important;
-  margin: 0 !important;
-  width: 16vw !important;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+
   .MuiOutlinedInput-root {
-    border-radius: 12px;
+    border-radius: $radius-md;
     height: 56px;
     padding: 1em;
-    background-color: rgba(248, 249, 250, 0.8);
+    background-color: rgb(255, 255, 255);
 
     .MuiOutlinedInput-input {
       font-size: 1rem;
     }
+
+    &:hover .MuiOutlinedInput-notchedOutline {
+      border-color: $navy-light;
+      border-width: 2px;
+    }
+
+    &.Mui-focused .MuiOutlinedInput-notchedOutline {
+      border-color: $cyan;
+      border-width: 2px;
+    }
+  }
+
+  .MuiInputLabel-root {
+    font-size: 1rem;
+    font-weight: 500;
+
+    &.Mui-focused {
+      color: $cyan;
+      font-weight: 600;
+    }
+  }
+
+  .MuiFormHelperText-root {
+    font-size: 0.875rem;
+    margin-top: $space-sm;
+    margin-left: $space-xs;
   }
 }
 
 .form {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-
+  gap: $space-md;
   max-width: 900px;
   margin: 0 auto;
-  padding: 0;
+  padding: $space-md;
   box-sizing: border-box;
+
+  @media (max-width: $bp-sm) {
+    grid-template-columns: 1fr;
+  }
 }
 
-.signup-prompt {
+.signup-page .signup-prompt {
   text-align: center;
   padding-top: 1rem;
   border-top: 1px solid #e9ecef;
 
   .signin-text {
-    color: #6c757d;
+    color: $text-secondary;
     font-size: 1.2rem;
     font-weight: 400;
     margin-bottom: 1rem;
   }
 }
 
+.signup-page .signin-button {
+  width: 30%;
+  margin-bottom: 1.5rem;
+
+  @media (max-width: $bp-sm) {
+    width: 60%;
+  }
+}
+
 .signup-subtitle {
   padding-top: 1em;
-  color: #6c757d;
+  color: $text-secondary;
   font-size: 1rem;
   font-weight: 400;
   margin-bottom: 0;
 }
 
 .submitBtn {
-  height: 56px !important;
-  width: 50% !important;
-  margin-bottom: 2.5rem !important;
-  border-radius: 12px !important;
-  font-weight: 600 !important;
-  text-transform: none !important;
-  font-size: 1.1rem !important;
-  box-shadow: 0 4px 20px rgba(62, 211, 222, 0.3) !important;
-  transition: all 0.3s ease !important;
+  height: 56px;
+  width: 50%;
+  margin-top: 0.5rem;
+  margin-bottom: 2.5rem;
+  border-radius: $radius-md;
+  font-weight: 600;
+  text-transform: none;
+  font-size: 1.1rem;
+  box-shadow: $shadow-glow;
+  transition: all 0.3s ease;
   grid-column: span 2;
   justify-self: center;
 
   &:hover {
-    transform: translateY(-2px) !important;
-    box-shadow: 0 6px 25px rgba(62, 211, 222, 0.4) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 25px rgba($cyan, 0.4);
+  }
+
+  @media (max-width: $bp-sm) {
+    grid-column: span 1;
+    width: 100%;
   }
 }

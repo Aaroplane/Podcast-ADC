@@ -1,32 +1,34 @@
+@use 'variables' as *;
+
 .voice-picker-loading {
   display: flex;
   justify-content: center;
-  padding: 8px;
+  padding: $space-sm;
 }
 
 .voice-picker {
   .field-label {
     font-weight: 500;
-    margin-bottom: 12px;
+    margin-bottom: $radius-md;
   }
 
   .voice-selectors {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: $radius-md;
   }
 
   .voice-select-control {
     .voice-role-label {
-      color: #666;
+      color: $text-secondary;
       font-size: 0.85rem;
-      margin-bottom: 4px;
+      margin-bottom: $space-xs;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }
 
     .voice-select {
-      border-radius: 8px;
+      border-radius: $radius-sm;
     }
   }
 }
@@ -35,7 +37,7 @@
   .voice-picker {
     .voice-selectors {
       flex-direction: row;
-      gap: 16px;
+      gap: $space-md;
     }
   }
 }

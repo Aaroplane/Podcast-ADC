@@ -1,3 +1,5 @@
+@use 'variables' as *;
+
 .profile-loading {
   display: flex;
   justify-content: center;
@@ -7,12 +9,12 @@
 
 .user-profile {
   min-height: 100vh;
-  background: #f5f5f5;
+  background: $bg-light;
 
   .profile-header {
-    background: linear-gradient(135deg, rgb(29, 58, 138) 30%, rgba(93, 237, 245, 1) 100%);
+    background: $brand-gradient;
     color: white;
-    padding: 48px 0;
+    padding: $space-xxl 0;
     text-align: center;
 
     .profile-title {
@@ -21,16 +23,16 @@
   }
 
   .profile-content {
-    padding: 32px 0;
+    padding: $space-xl 0;
   }
 
   .profile-card {
-    border-radius: 16px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border-radius: $radius-lg;
+    box-shadow: $shadow-md;
   }
 
   .profile-card-header {
-    background: linear-gradient(135deg, rgb(29, 58, 138) 30%, rgba(93, 237, 245, 1) 100%);
+    background: $brand-gradient;
     color: white;
 
     .MuiCardHeader-action {
@@ -49,7 +51,7 @@
   }
 
   .profile-card-content {
-    padding: 32px;
+    padding: $space-xl;
   }
 
   .profile-form {
@@ -59,7 +61,7 @@
 
     .form-row {
       display: flex;
-      gap: 16px;
+      gap: $space-md;
 
       @media (max-width: 600px) {
         flex-direction: column;
@@ -68,12 +70,12 @@
 
     .form-actions {
       display: flex;
-      gap: 12px;
-      margin-top: 8px;
+      gap: $radius-md;
+      margin-top: $space-sm;
     }
 
     .save-button {
-      background: linear-gradient(135deg, rgba(93, 237, 245, 1) 30%, rgb(29, 58, 138) 100%);
+      background: $brand-gradient-reverse;
     }
   }
 
@@ -83,7 +85,7 @@
     gap: 20px;
 
     .profile-field {
-      padding-bottom: 16px;
+      padding-bottom: $space-md;
       border-bottom: 1px solid #e0e0e0;
 
       &:last-child {
@@ -93,9 +95,9 @@
     }
 
     .field-label {
-      color: #666;
+      color: $text-secondary;
       font-size: 0.85rem;
-      margin-bottom: 4px;
+      margin-bottom: $space-xs;
       text-transform: uppercase;
       letter-spacing: 0.5px;
     }

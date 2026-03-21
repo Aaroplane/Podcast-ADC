@@ -1,24 +1,31 @@
+@use 'variables' as *;
+
 .footer {
-  background: rgb(29, 58, 138) !important;
-  margin: 0 !important;
-  padding: 40px 0 !important;
-  width: 100vw !important;
+  background: $navy;
+  margin: 0;
+  padding: $space-xxl 1em;
+  width: 100%;
   position: relative;
-  padding: 1em !important;
   color: white;
+  box-sizing: border-box;
 
   .footer_top {
     display: flex;
     align-items: center;
     max-width: 1900px;
-    margin-right: 2em;
+    margin: 0 auto;
     padding: 0 20px;
     flex-wrap: wrap;
 
-    @media (max-width: 768px) {
+    @media (max-width: $bp-md) {
       flex-direction: column;
       text-align: center;
       gap: 20px;
+    }
+
+    @media (max-width: $bp-sm) {
+      padding: 0 $space-sm;
+      gap: $space-md;
     }
   }
 
@@ -31,13 +38,20 @@
     min-width: 300px;
     color: white;
 
-    @media (max-width: 968px) {
+    @media (max-width: $bp-md) {
       min-width: 280px;
       margin-top: 20px;
+      padding: 25px;
+    }
+
+    @media (max-width: $bp-sm) {
+      min-width: unset;
+      width: 100%;
+      padding: $space-lg;
     }
 
     .contact_title {
-      font-size: 1.3rem;
+      font-size: clamp(1.1rem, 3vw, 1.3rem);
       font-weight: 600;
       margin-bottom: 15px;
       color: #a7f3d0;
@@ -48,24 +62,27 @@
       flex-direction: column;
       gap: 20px;
       margin-left: 10px;
-      
-      
+
+      @media (max-width: $bp-sm) {
+        gap: $space-md;
+        margin-left: 0;
+      }
+
       .contact_input {
-        color: rgb(0, 0, 0) !important;
+        color: rgb(0, 0, 0);
         background: rgb(255, 255, 255);
-        // border: 1px solid rgba(255, 255, 255, 0.3);
-        border-radius: 8px;
+        border-radius: $radius-sm;
         font-size: 0.9rem;
         transition: all 0.3s ease;
 
         &::placeholder {
-          color: rgb(0, 0, 0) !important;
+          color: rgb(0, 0, 0);
         }
 
         &:focus {
           outline: none;
-          border-color: #06b6d4;
-          box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.3);
+          border-color: $cyan-dark;
+          box-shadow: 0 0 0 2px rgba($cyan-dark, 0.3);
           background: rgba(255, 255, 255, 0.15);
         }
       }
@@ -73,15 +90,14 @@
       .contact_textarea {
         resize: vertical;
         font-family: inherit;
-        // padding: 10px;
       }
 
       .contact_button {
-        background: rgb(29, 58, 138);
-        color: rgb(58, 182, 207);
+        background: $navy;
+        color: $cyan;
         border: none;
-        border-radius: 8px;
-        padding: 12px 20px;
+        border-radius: $radius-sm;
+        padding: $radius-md 20px;
         font-size: 1rem;
         font-weight: 600;
         cursor: pointer;
@@ -90,7 +106,7 @@
         &:hover {
           background: white;
           transform: translateY(-2px);
-          box-shadow: 0 4px 15px rgba(6, 182, 212, 0.4);
+          box-shadow: 0 4px 15px rgba($cyan-dark, 0.4);
         }
 
         &:active {
@@ -101,12 +117,15 @@
   }
 
   .footer_pic {
-    max-width: 20% !important;
-    max-width: 25% !important;
+    max-width: 25%;
     transition: transform 0.3s ease;
 
     &:hover {
       transform: scale(1.05);
+    }
+
+    @media (max-width: $bp-sm) {
+      max-width: 50%;
     }
   }
 
@@ -118,7 +137,7 @@
     gap: 15px;
 
     .footer_name {
-      font-size: 1.8rem;
+      font-size: clamp(1.2rem, 4vw, 1.8rem);
       font-weight: 700;
       background: linear-gradient(45deg, #ffffff, #a7f3d0);
       background-clip: text;
@@ -130,7 +149,7 @@
     }
 
     .footer_tagline {
-      font-size: 1.1rem;
+      font-size: clamp(0.9rem, 2.5vw, 1.1rem);
       color: #e0f2fe;
       font-weight: 300;
       font-style: italic;
@@ -141,6 +160,8 @@
       display: flex;
       gap: 20px;
       align-items: center;
+
+      @media (max-width: $bp-sm) { gap: $space-md; }
 
       .social_link {
         display: flex;
@@ -156,6 +177,11 @@
         backdrop-filter: blur(10px);
         border: 1px solid rgba(255, 255, 255, 0.2);
 
+        @media (max-width: $bp-sm) {
+          width: 40px;
+          height: 40px;
+        }
+
         &:hover {
           background: rgba(255, 255, 255, 0.2);
           transform: translateY(-3px);
@@ -164,21 +190,20 @@
 
         &.github:hover {
           background: #333;
-          color: white;
         }
 
         &.linkedin:hover {
           background: #0077b5;
-          color: white;
         }
 
         &.portfolio:hover {
-          background: linear-gradient(45deg, #06b6d4, #0891b2);
-          color: white;
+          background: linear-gradient(45deg, $cyan-dark, #0891b2);
         }
 
         .social_icon {
           font-size: 24px;
+
+          @media (max-width: $bp-sm) { font-size: 20px; }
         }
       }
     }
@@ -187,9 +212,14 @@
   .footer_bottom {
     margin-top: 30px;
     padding-top: 20px;
+
+    @media (max-width: $bp-sm) {
+      margin-top: 20px;
+      padding-top: $space-md;
+    }
     border-top: 1px solid rgba(255, 255, 255, 0.2);
     text-align: center;
-    
+
     .footer_copyright {
       font-size: 0.9rem;
       color: #b0e7ff;

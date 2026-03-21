@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import { Box, Container, Paper, Typography, TextField } from "@mui/material";
 import { Link } from "react-router-dom";
 import {
@@ -9,7 +9,7 @@ import {
 import { useAuth } from "../contexts/AuthContext";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import "../Styling/NewLandingPage.scss";
 import CCPImagine from "../assets/CCPIconThink.png";
 import CCPWrite from "../assets/CCPIconWrite.png";
@@ -20,12 +20,42 @@ import CCPFooterLogo from "../assets/CCPFooterPhoto.png";
 import newLandingVideo from "../assets/NewLandingPageAssets/newccpcta.mp4";
 import vidnextlogin from "../assets/vidnextlogin.mp4";
 
+function useScrollReveal() {
+  const containerRef = useRef(null);
+
+  useEffect(() => {
+    const container = containerRef.current;
+    if (!container) return;
+
+    const elements = container.querySelectorAll(".reveal");
+    if (!elements.length) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+
+    elements.forEach((el) => observer.observe(el));
+
+    return () => observer.disconnect();
+  }, []);
+
+  return containerRef;
+}
+
 export default function NewLandingPage() {
   const { isAuthenticated, user, login } = useAuth();
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [showButton, setShowButton] = useState(false);
+  const containerRef = useScrollReveal();
 
   const {
     register,
@@ -60,16 +90,8 @@ export default function NewLandingPage() {
     }
   };
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowButton(true);
-    }, 6900);
-
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
-    <div className="newLandingPage_container">
+    <div className="newLandingPage_container" ref={containerRef}>
       <Box className="ctaVideo_container">
         <video
           className="newLandingPage_cta_video"
@@ -82,7 +104,7 @@ export default function NewLandingPage() {
           Your browser does not support the video tag.
         </video>
       </Box>
-      {/* Carousel of Podcast Options */}
+
       <Box className="cta_separate_bar">
         <Box className="cta_text_container">
           <Typography className="carousel_options">
@@ -115,7 +137,8 @@ export default function NewLandingPage() {
           <Typography className="carousel_options">Alien Love Songs</Typography>
         </Box>
       </Box>
-      <Box className="cta_hero_logo_container">
+
+      <Box className="cta_hero_logo_container reveal">
         <Box
           className="hero-logo"
           component="img"
@@ -128,16 +151,16 @@ export default function NewLandingPage() {
             AI Podcast Studio – Your Personalized Podcast Creator
           </StyledTypography>
           <Typography className="intro-text">
-            🎙️ Ready to Hear What You Love? Whether you want to unwind with a
+            Ready to Hear What You Love? Whether you want to unwind with a
             podcast tailored just for you or you are dreaming up a series of
-            your own, you’re in the perfect place. Our AI-powered podcast
+            your own, you're in the perfect place. Our AI-powered podcast
             generator creates unique, fully-voiced episodes on any topic you
             choose—just for your enjoyment. Want a relaxing story? A deep dive
             into a niche interest? A custom series with your own voice and
             vision? Just prompt, press play, and enjoy. No studio. No script. No
             limits. Just AI-crafted audio that sounds like it was made with you
-            in mind. 🎧 Explore. Create. Listen. Because your next favorite
-            podcast might be one you’ve imagined yourself.
+            in mind. Explore. Create. Listen. Because your next favorite
+            podcast might be one you've imagined yourself.
           </Typography>
           <Typography className="intro-text">
             Dive into <strong>true crime</strong>, explore tech trends, tell
@@ -152,19 +175,19 @@ export default function NewLandingPage() {
               LinkComponent={Link}
               to={isAuthenticated ? `/users/${user.id}/userdashboard` : "/signup"}
             >
-              Start Creating Now 🎧
+              Start Creating Now
             </StyledButton>
           </Box>
-          {/* Order of Operations */}
         </Container>
       </Box>
+
       <Box className="how-it-works-section">
         <StyledTypography component="h2" className="section-title">
           Broaden Your Horizon
         </StyledTypography>
 
         <Paper className="grid-layout-marketing" elevation={10}>
-          <Box className="grid-item" tabIndex="0" role="button">
+          <Box className="grid-item reveal reveal-delay-0" tabIndex="0" role="button">
             <Box
               component="img"
               className="process-icon"
@@ -183,7 +206,7 @@ export default function NewLandingPage() {
             </Paper>
           </Box>
 
-          <Box className="grid-item" tabIndex="0" role="button">
+          <Box className="grid-item reveal reveal-delay-1" tabIndex="0" role="button">
             <Box
               component="img"
               className="process-icon"
@@ -201,7 +224,7 @@ export default function NewLandingPage() {
             </Paper>
           </Box>
 
-          <Box className="grid-item" tabIndex="0" role="button">
+          <Box className="grid-item reveal reveal-delay-2" tabIndex="0" role="button">
             <Box
               component="img"
               className="process-icon"
@@ -219,7 +242,7 @@ export default function NewLandingPage() {
             </Paper>
           </Box>
 
-          <Box className="grid-item" tabIndex="0" role="button">
+          <Box className="grid-item reveal reveal-delay-3" tabIndex="0" role="button">
             <Box
               component="img"
               className="process-icon"
@@ -238,10 +261,12 @@ export default function NewLandingPage() {
           </Box>
         </Paper>
       </Box>
-      <StyledTypography className="cta_login_title">
+
+      <StyledTypography className="cta_login_title reveal">
         Back again? Got something new? We're glad to see YOU!
       </StyledTypography>
-      <Box className="cta_login_container">
+
+      <Box className="cta_login_container reveal">
         <Box>
           <video
             className="video_next_login"
@@ -255,13 +280,13 @@ export default function NewLandingPage() {
         </Box>
 
         <Paper className="cta_login">
-              <Box
-                className="logo_pic"
-                component="img"
-                src={CCPFooterLogo}
-                alt="Chit Chat Logo"
-                loading="eager"
-              />
+          <Box
+            className="logo_pic"
+            component="img"
+            src={CCPFooterLogo}
+            alt="Chit Chat Logo"
+            loading="eager"
+          />
           <form onSubmit={handleSubmit(onSubmit)} className="signin-form">
             <div className="form-field">
               <TextField

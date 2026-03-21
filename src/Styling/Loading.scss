@@ -1,3 +1,5 @@
+@use 'variables' as *;
+
 .loading_box {
   display: flex;
   justify-content: center;
@@ -9,6 +11,7 @@
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+  background-color: $bg-warm;
 }
 
 .loading_box.visible {

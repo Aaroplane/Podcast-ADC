@@ -1,3 +1,5 @@
+@use 'variables' as *;
+
 // Main container
 .podcast-dashboard {
   min-height: 100vh;
@@ -5,20 +7,20 @@
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  
+  background-color: $bg-light;
 }
 
 // Header styles
 .header {
-  background: linear-gradient(135deg,rgb(29, 58, 138) 30%, rgba(93, 237, 245, 1) 100%);
+  background: $brand-gradient;
   color: white;
-  padding: 48px 0;
+  padding: $space-xxl 0;
   text-align: center;
 }
 
 .header-title {
   font-weight: bold;
-  margin-bottom: 16px;
+  margin-bottom: $space-md;
 }
 
 .header-subtitle {
@@ -26,77 +28,81 @@
 }
 
 // Main content grid
-.main-content {
-  padding: 32px 0;
+.podcast-dashboard .main-content {
+  padding: $space-xl 0;
 }
 
-.content-grid {
+.podcast-dashboard .content-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 32px;
+  gap: $space-xl;
   align-items: start;
 
-  @media (min-width: 1200px) {
+  @media (min-width: $bp-md) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (min-width: $bp-xl) {
     grid-template-columns: 1fr 1fr;
   }
 }
 
 // Card styles
-.card {
-  border-radius: 16px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+.podcast-dashboard .card {
+  border-radius: $radius-lg;
+  box-shadow: $shadow-md;
   height: fit-content;
 }
 
 .card-header {
-  background: linear-gradient(135deg,rgb(29, 58, 138) 30%, rgba(93, 237, 245, 1) 100%);
+  background: $brand-gradient;
   color: white;
 
   &.library-header {
-  background: linear-gradient(135deg,rgb(29, 58, 138) 30%, rgba(93, 237, 245, 1) 100%);
+    background: $brand-gradient;
   }
 }
 
 .card-header-content {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: $space-sm;
 }
 
 .card-content {
-  padding: 32px;
+  padding: $space-xl;
 }
 
 // Form styles
 .form-container {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: $space-lg;
 }
 
-.form-field {
-  margin-bottom: 8px;
+.podcast-dashboard .form-field {
+  margin-bottom: $space-sm;
 
   .field-label {
-    margin-bottom: 8px;
+    margin-bottom: $space-sm;
     font-weight: 500;
   }
 
   .text-field {
-    border-radius: 8px;
+    border-radius: $radius-sm;
   }
 
   .select-field {
-    border-radius: 8px;
+    border-radius: $radius-sm;
   }
 }
 
 .submit-button {
-  background: linear-gradient(135deg,rgba(93, 237, 245, 1)30%,rgb(29, 58, 138) 100%);
-  padding: 16px 0;
+  background: $brand-gradient-reverse;
+  padding: $space-md 0;
   font-size: 1.1rem;
-  margin-top: 16px;
-  border-radius: 12px;
+  margin-top: $space-md;
+  border-radius: $radius-md;
   text-transform: none;
   font-weight: 600;
 }
@@ -105,7 +111,7 @@
 .script-container {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: $space-lg;
 }
 
 .script-header {
@@ -113,31 +119,31 @@
 
   .script-title {
     font-weight: bold;
-    margin-bottom: 16px;
+    margin-bottom: $space-md;
   }
 
   .mood-badge {
-    background-color: teal;
+    background-color: $cyan-dark;
     color: white;
-    padding: 4px 16px;
-    border-radius: 8px;
+    padding: $space-xs $space-md;
+    border-radius: $radius-sm;
   }
 }
 
 .script-content {
-  padding: 24px;
+  padding: $space-lg;
   max-height: 400px;
   overflow-y: auto;
   background: linear-gradient(135deg, #f8f9fa 0%, #e3f2fd 100%);
-  border: 2px solid blue;
-  border-radius: 8px;
+  border: 2px solid $navy;
+  border-radius: $radius-sm;
 
   .script-section {
-    margin-bottom: 16px;
+    margin-bottom: $space-md;
 
     .section-title {
-      color: black;
-      margin-bottom: 8px;
+      color: $text-primary;
+      margin-bottom: $space-sm;
     }
 
     .section-content {
@@ -148,50 +154,50 @@
 
 .script-actions {
   display: flex;
-  gap: 16px;
+  gap: $space-md;
 
   .convert-button {
     flex: 1;
-    background: linear-gradient(135deg, #4caf50 0%, white 100%);
+    background: $brand-gradient-reverse;
   }
 
   .back-button {
-    border-color: black;
+    border-color: $navy;
   }
 }
 
 // Audio conversion styles
 .audio-loading {
   text-align: center;
-  padding: 48px 0;
+  padding: $space-xxl 0;
 
   .loading-title {
-    margin-bottom: 8px;
+    margin-bottom: $space-sm;
   }
 
   .loading-subtitle {
-    color: lightcoral;
+    color: $text-muted;
   }
 }
 
 // Podcast library styles
 .library-content {
-  padding: 32px;
+  padding: $space-xl;
 }
 
 .empty-library {
   text-align: center;
-  padding: 48px 0;
-  color: lightcoral;
+  padding: $space-xxl 0;
+  color: $text-muted;
 
   .empty-icon {
     font-size: 80px;
-    margin-bottom: 16px;
+    margin-bottom: $space-md;
     opacity: 0.3;
   }
 
   .empty-title {
-    margin-bottom: 8px;
+    margin-bottom: $space-sm;
   }
 }
 
@@ -201,10 +207,10 @@
 }
 
 .podcast-accordion {
-  margin-bottom: 16px;
+  margin-bottom: $space-md;
   background: linear-gradient(135deg, #f8f9fa 0%, #e3f2fd 100%);
-  border: 1px solid blue;
-  border-radius: 8px;
+  border: 1px solid $navy-light;
+  border-radius: $radius-sm;
 
   &::before {
     display: none;
@@ -218,21 +224,21 @@
 
   .podcast-badges {
     display: flex;
-    gap: 8px;
-    margin-top: 8px;
+    gap: $space-sm;
+    margin-top: $space-sm;
 
     .badge {
       font-size: 0.75rem;
-      padding: 2px 8px;
-      border-radius: 4px;
+      padding: 2px $space-sm;
+      border-radius: $space-xs;
 
       &.mood-badge {
-        background-color: teal;
+        background-color: $cyan-dark;
         color: white;
       }
 
       &.date-badge {
-        background-color: blue;
+        background-color: $navy;
         color: white;
       }
     }
@@ -241,15 +247,15 @@
 
 .podcast-details {
   .podcast-description {
-    margin-bottom: 16px;
-    color: lightcoral;
+    margin-bottom: $space-md;
+    color: $text-secondary;
   }
 
   .audio-player {
-    padding: 16px;
-    margin-bottom: 16px;
+    padding: $space-md;
+    margin-bottom: $space-md;
     background-color: white;
-    border-radius: 8px;
+    border-radius: $radius-sm;
 
     audio {
       width: 100%;
@@ -258,13 +264,13 @@
 
   .podcast-actions {
     display: flex;
-    gap: 8px;
+    gap: $space-sm;
   }
 }
 
 // Button styles
-.button {
-  border-radius: 12px;
+.podcast-dashboard .button {
+  border-radius: $radius-md;
   text-transform: none;
   font-weight: 600;
 }
@@ -272,19 +278,19 @@
 // Responsive utilities
 @media (max-width: 600px) {
   .header {
-    padding: 32px 0;
+    padding: $space-xl 0;
   }
 
-  .main-content {
-    padding: 16px 0;
+  .podcast-dashboard .main-content {
+    padding: $space-md 0;
   }
 
   .card-content,
   .library-content {
-    padding: 16px;
+    padding: $space-md;
   }
 
-  .content-grid {
-    gap: 16px;
+  .podcast-dashboard .content-grid {
+    gap: $space-md;
   }
 }

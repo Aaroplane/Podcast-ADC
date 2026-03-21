@@ -2,9 +2,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import {
   StyledButton,
-  StyledContainer,
   StyledTypography,
-  StyledPaper,
 } from "../../Styling/theme";
 import "../../Styling/SignInStyling.scss";
 import { TextField, Typography, Alert } from "@mui/material";
@@ -51,7 +49,7 @@ export default function SignIn() {
 
   return (
     <div className="signin-page">
-      <StyledContainer className="signin-container">
+      <div className="signin-container">
         {/* Video Section */}
         <div className="video-section">
           <video 
@@ -67,7 +65,7 @@ export default function SignIn() {
 
         {/* Form Section */}
         <div className="form-section">
-          <StyledPaper className="signin-paper">
+          <div className="signin-paper">
             <div className="form-header">
               <StyledTypography className="signin-title">
                 Jump Back in!
@@ -143,9 +141,9 @@ export default function SignIn() {
                 Sign Up
               </StyledButton>
             </div>
-          </StyledPaper>
+          </div>
         </div>
-      </StyledContainer>
+      </div>
     </div>
   );
 }

@@ -1,0 +1,44 @@
+@use 'variables' as *;
+
+.entry_container {
+  width: 100%;
+}
+
+.accordion_container {
+  padding: $space-md;
+}
+
+.accordion-title {
+  font-weight: 700;
+  color: $navy;
+  margin-bottom: $space-md;
+  font-size: 1.5rem;
+}
+
+.accordion-item {
+  margin-bottom: $space-md;
+  background: linear-gradient(135deg, #f8f9fa 0%, #e3f2fd 100%);
+  border: 1px solid rgba($navy, 0.1);
+  border-radius: $radius-sm;
+
+  &::before {
+    display: none;
+  }
+}
+
+.accordion-summary {
+  font-weight: 500;
+}
+
+.accordion-details {
+  padding: $space-md;
+
+  .accordion-audio {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .accordion-actions {
+    margin-top: 10px;
+  }
+}

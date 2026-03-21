@@ -1,0 +1,59 @@
+// ======================
+// ChitChat Podcast — Design Tokens
+// ======================
+
+// Brand Colors
+$navy: rgb(29, 58, 138);
+$navy-light: rgb(101, 138, 219);
+$navy-dark: rgb(20, 40, 100);
+$cyan: rgb(62, 211, 222);
+$cyan-light: rgb(93, 237, 245);
+$cyan-dark: rgb(6, 182, 212);
+
+// Semantic Colors
+$text-primary: #2c3e50;
+$text-secondary: #666;
+$text-muted: #999;
+$bg-warm: #f5f4ed;
+$bg-light: #f5f5f5;
+$bg-paper: #ebe7dd;
+$error: rgb(210, 62, 51);
+$success: rgb(21, 156, 21);
+$warning: rgb(195, 106, 22);
+
+// Gradients
+$brand-gradient: linear-gradient(135deg, $navy 30%, $cyan-light 100%);
+$brand-gradient-reverse: linear-gradient(135deg, $cyan-light 30%, $navy 100%);
+$brand-gradient-vertical: linear-gradient(180deg, $navy 0%, $cyan-dark 100%);
+
+// Shadows
+$shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.08);
+$shadow-md: 0 8px 32px rgba(0, 0, 0, 0.1);
+$shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.1);
+$shadow-glow: 0 4px 20px rgba(62, 211, 222, 0.3);
+
+// Border Radius
+$radius-sm: 8px;
+$radius-md: 12px;
+$radius-lg: 16px;
+$radius-xl: 20px;
+
+// Breakpoints
+$bp-sm: 480px;
+$bp-md: 768px;
+$bp-lg: 1024px;
+$bp-xl: 1200px;
+
+// Spacing Scale
+$space-xs: 4px;
+$space-sm: 8px;
+$space-md: 16px;
+$space-lg: 24px;
+$space-xl: 32px;
+$space-xxl: 48px;
+
+// Typography
+$font-primary: "Montserrat", sans-serif;
+$font-display: "Abril Fatface", serif;
+$font-accent: "Akronim", sans-serif;
+$font-serif: "DM Serif Display", serif;

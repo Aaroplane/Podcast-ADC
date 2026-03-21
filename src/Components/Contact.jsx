@@ -1,32 +1,28 @@
-import { Card, CardContent, Box, Container, Typography } from "@mui/material";
-import { Button } from "@mui/material";
-import { Mail, Phone } from "lucide-react";
+import { Card, CardContent, Box, Container, Typography, Button } from "@mui/material";
+import { Email, Phone } from "@mui/icons-material";
 import "../Styling/Contact.scss";
 import ContactPhoto from "../assets/ContactPhoto.jpeg";
 
 const Contact = () => {
   return (
     <div className="contact-page">
-      {/* Hero Section */}
       <div className="hero-section">
         <Container className="hero-title-section">
-          <Typography className="hero-title">
+          <Typography variant="h2" className="hero-title">
             Get to know the Creator!
           </Typography>
           <div className="hero-divider"></div>
         </Container>
 
-        {/* Main Content */}
         <div className="main-content">
           <div className="content-grid">
-            {/* Creator Photo */}
             <Container className="creator-section">
               <div className="creator-photo-wrapper">
                 <div className="photo-glow"></div>
                 <Box className="photo-container">
                   <Box className="photo-placeholder">
                     <Box
-                      component={"img"}
+                      component="img"
                       src={ContactPhoto}
                       alt="Creator"
                       className="creator-photo"
@@ -34,26 +30,27 @@ const Contact = () => {
                   </Box>
                 </Box>
               </div>
-              <p className="creator-name">Aaron - The Creator</p>
+              <Typography className="creator-name">Aaron - The Creator</Typography>
             </Container>
 
-            {/* Contact Information */}
             <div className="contact-info-section">
               <Card className="contact-card">
                 <CardContent className="contact-card-content">
-                  <h2 className="contact-title">Contact Me</h2>
-                  <p className="contact-description">
+                  <Typography variant="h4" className="contact-title">
+                    Contact Me
+                  </Typography>
+                  <Typography className="contact-description">
                     If you have any questions, feedback, or just want to say
                     hello, feel free to reach out!
-                  </p>
+                  </Typography>
 
                   <div className="contact-methods">
                     <div className="contact-method email-method">
                       <div className="contact-icon email-icon">
-                        <Mail className="icon" />
+                        <Email className="icon" />
                       </div>
                       <div>
-                        <p className="contact-method-label">Email</p>
+                        <Typography className="contact-method-label">Email</Typography>
                         <a
                           href="mailto:aarocons@gmail.com"
                           className="contact-method-value email-link"
@@ -68,10 +65,10 @@ const Contact = () => {
                         <Phone className="icon" />
                       </div>
                       <div>
-                        <p className="contact-method-label">Phone</p>
-                        <p className="contact-method-value">
+                        <Typography className="contact-method-label">Phone</Typography>
+                        <Typography className="contact-method-value">
                           Available upon request
-                        </p>
+                        </Typography>
                       </div>
                     </div>
                   </div>
@@ -92,17 +89,18 @@ const Contact = () => {
           </div>
         </div>
 
-        {/* Additional Info Section */}
         <div className="additional-info">
           <Card className="info-card">
             <CardContent className="info-card-content">
-              <h3 className="info-title">Let's Connect!</h3>
-              <p className="info-description">
+              <Typography variant="h5" className="info-title">
+                Let's Connect!
+              </Typography>
+              <Typography className="info-description">
                 I'm always excited to discuss new projects, creative ideas, or
                 opportunities to be part of your visions. Whether you're looking
                 for collaboration or just want to chat about technology and
                 design, I'd love to hear from you over some coffee/tea.
-              </p>
+              </Typography>
               <div className="info-dots">
                 <div className="dot dot-1"></div>
                 <div className="dot dot-2"></div>

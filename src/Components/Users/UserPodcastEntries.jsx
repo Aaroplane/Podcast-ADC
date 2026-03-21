@@ -1,18 +1,13 @@
-import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useState } from "react";
 import api from "../../utils/api";
 import {
   StyledButton,
-  StyledTypography,
   StyledContainer,
-  StyledSubTypography,
 } from "../../Styling/theme";
 import {
-  Paper,
   Container,
   Accordion,
   AccordionDetails,
-  AccordionActions,
   AccordionSummary,
 } from "@mui/material";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
@@ -20,7 +15,6 @@ import Typography from "@mui/material/Typography";
 import { useAuth } from "../../contexts/AuthContext";
 import "../../Styling/EntriesStyling.scss";
 import PropTypes from 'prop-types';
-
 
 export default function UserPodcastEntries({podcastEntries, setPodcastEntries}) {
   const { user } = useAuth();
@@ -49,42 +43,43 @@ export default function UserPodcastEntries({podcastEntries, setPodcastEntries}) 
       </StyledContainer>
     );
   }
+
   return (
     <div className="entry_container">
-      <Container className="accordian_container">
-         <div>
-          <Typography className="accordian-title">Podcast Library</Typography>
-      {podcastEntries.map((podcast, index) => (
-        <Accordion className="accordian-item" key={podcast.id}>
-          <AccordionSummary className="accordian-summary"
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls={`panel-content-${index}`}
-            id={`panel-header-${index}`}
-          >
-            <Typography>{podcast.title}</Typography>
-          </AccordionSummary>
-          <AccordionDetails className="accordian-details">
-            <Typography>{podcast.description}</Typography>
-            {podcast.audio_url && (
-              <audio controls style={{ width: "100%", marginTop: "10px" }}>
-                <source src={podcast.audio_url} type="audio/mpeg" />
-                Your browser does not support the audio element.
-              </audio>
-            )}
-            <div style={{ marginTop: "10px" }}>
-              <StyledButton
-                onClick={() => deletePodcast(podcast.id)}
-                color="primary"
-                size="small"
+      <Container className="accordion_container">
+        <div>
+          <Typography className="accordion-title">Podcast Library</Typography>
+          {podcastEntries.map((podcast, index) => (
+            <Accordion className="accordion-item" key={podcast.id}>
+              <AccordionSummary
+                className="accordion-summary"
+                expandIcon={<ExpandMoreIcon />}
+                aria-controls={`panel-content-${index}`}
+                id={`panel-header-${index}`}
               >
-                Delete
-              </StyledButton>
-            </div>
-          </AccordionDetails>
-        </Accordion>
-      ))}
-    </div>
-       
+                <Typography>{podcast.title}</Typography>
+              </AccordionSummary>
+              <AccordionDetails className="accordion-details">
+                <Typography>{podcast.description}</Typography>
+                {podcast.audio_url && (
+                  <audio controls className="accordion-audio">
+                    <source src={podcast.audio_url} type="audio/mpeg" />
+                    Your browser does not support the audio element.
+                  </audio>
+                )}
+                <div className="accordion-actions">
+                  <StyledButton
+                    onClick={() => deletePodcast(podcast.id)}
+                    color="primary"
+                    size="small"
+                  >
+                    Delete
+                  </StyledButton>
+                </div>
+              </AccordionDetails>
+            </Accordion>
+          ))}
+        </div>
       </Container>
     </div>
   );

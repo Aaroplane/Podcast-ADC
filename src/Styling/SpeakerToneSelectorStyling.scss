@@ -1,37 +1,39 @@
+@use 'variables' as *;
+
 .speaker-tone-selector {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: $space-md;
 
   .field-label {
-    margin-bottom: 8px;
+    margin-bottom: $space-sm;
     font-weight: 500;
   }
 
   .speaker-radio-group {
     display: flex;
-    gap: 8px;
+    gap: $space-sm;
     flex-wrap: wrap;
   }
 
   .speaker-option {
     border: 1px solid #e0e0e0;
-    border-radius: 8px;
-    padding: 4px 12px;
+    border-radius: $radius-sm;
+    padding: $space-xs $radius-md;
     margin: 0;
     transition: all 0.2s ease;
 
     &:hover {
-      border-color: rgb(93, 237, 245);
-      background: rgba(93, 237, 245, 0.05);
+      border-color: $cyan-light;
+      background: rgba($cyan-light, 0.05);
     }
   }
 
   .speaker-radio {
-    color: rgb(29, 58, 138);
+    color: $navy;
 
     &.Mui-checked {
-      color: rgb(93, 237, 245);
+      color: $cyan-light;
     }
   }
 
@@ -40,7 +42,7 @@
   }
 
   .select-field {
-    border-radius: 8px;
+    border-radius: $radius-sm;
   }
 }
 
@@ -55,7 +57,7 @@
   }
 }
 
-@media (max-width: 600px) {
+@media (max-width: $bp-sm) {
   .speaker-tone-selector {
     .speaker-radio-group {
       flex-direction: column;

@@ -1,6 +1,19 @@
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  min-height: 100vh;
+  overflow-x: hidden;
+  background-color: rgb(29, 58, 138);
+}
+
 body {
-    margin: 0;
-    padding: 0;
-    /* width: 100vh; */
-    ;
+  margin: 0;
+  padding: 0;
+  background-color: rgb(29, 58, 138);
+
 }

@@ -1,12 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import "../../Styling/ConversationScriptRendererStyling.scss";
 
-const speakerColors = {
-  host: { bg: "rgba(93, 237, 245, 0.15)", border: "rgb(93, 237, 245)", label: "#0097a7" },
-  cohost: { bg: "rgba(29, 58, 138, 0.1)", border: "rgb(29, 58, 138)", label: "#1d3a8a" },
-  narrator: { bg: "rgba(158, 158, 158, 0.1)", border: "#9e9e9e", label: "#616161" },
-};
-
 export default function ConversationScriptRenderer({ script }) {
   if (!script) return null;
 
@@ -26,23 +20,17 @@ export default function ConversationScriptRenderer({ script }) {
 
         <Box className="turns-container">
           {script.turns.map((turn, index) => {
-            const colors = speakerColors[turn.speaker] || speakerColors.host;
             const isHost = turn.speaker === "host";
+            const speakerClass = `turn-${turn.speaker}`;
 
             return (
               <Box
                 key={index}
-                className={`turn-bubble ${isHost ? "turn-left" : "turn-right"}`}
-                sx={{
-                  backgroundColor: colors.bg,
-                  borderLeft: isHost ? `4px solid ${colors.border}` : "none",
-                  borderRight: !isHost ? `4px solid ${colors.border}` : "none",
-                }}
+                className={`turn-bubble ${isHost ? "turn-left" : "turn-right"} ${speakerClass}`}
               >
                 <Typography
                   variant="caption"
-                  className="speaker-label"
-                  sx={{ color: colors.label }}
+                  className={`speaker-label label-${turn.speaker}`}
                 >
                   {turn.speaker.charAt(0).toUpperCase() + turn.speaker.slice(1)}
                 </Typography>

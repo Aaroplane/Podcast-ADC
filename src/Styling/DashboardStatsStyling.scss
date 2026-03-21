@@ -1,38 +1,40 @@
+@use 'variables' as *;
+
 .dashboard-stats-loading {
   display: flex;
   justify-content: center;
-  padding: 32px;
+  padding: $space-xl;
 }
 
 .dashboard-stats-error {
   text-align: center;
-  padding: 16px;
+  padding: $space-md;
 }
 
 .dashboard-stats {
   display: flex;
   flex-direction: column;
-  gap: 24px;
-  padding: 16px 0;
+  gap: $space-lg;
+  padding: $space-md 0;
 
   .member-info {
     text-align: center;
 
     .welcome-text {
       font-weight: 600;
-      color: rgb(29, 58, 138);
+      color: $navy;
     }
 
     .member-since {
-      color: #666;
-      margin-top: 4px;
+      color: $text-secondary;
+      margin-top: $space-xs;
     }
   }
 
   .stat-cards {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 16px;
+    gap: $space-md;
 
     @media (min-width: 600px) {
       grid-template-columns: repeat(4, 1fr);
@@ -40,10 +42,10 @@
   }
 
   .stat-card {
-    border-radius: 12px;
+    border-radius: $radius-md;
     text-align: center;
     background: linear-gradient(135deg, #f8f9fa 0%, #e3f2fd 100%);
-    border: 1px solid rgba(29, 58, 138, 0.1);
+    border: 1px solid rgba($navy, 0.1);
     transition: transform 0.2s ease;
 
     &:hover {
@@ -55,12 +57,12 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 8px;
-    padding: 16px;
+    gap: $space-sm;
+    padding: $space-md;
   }
 
   .stat-icon {
-    color: rgb(93, 237, 245);
+    color: $cyan-light;
     font-size: 2rem;
 
     svg {
@@ -70,38 +72,38 @@
 
   .stat-value {
     font-weight: 700;
-    color: rgb(29, 58, 138);
+    color: $navy;
   }
 
   .stat-label {
-    color: #666;
+    color: $text-secondary;
     font-size: 0.85rem;
   }
 
   .activity-section {
     .activity-title {
       font-weight: 600;
-      margin-bottom: 12px;
-      color: rgb(29, 58, 138);
+      margin-bottom: $radius-md;
+      color: $navy;
     }
   }
 
   .activity-chart {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: $space-sm;
   }
 
   .activity-row {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: $radius-md;
   }
 
   .activity-month {
     width: 80px;
     font-size: 0.85rem;
-    color: #666;
+    color: $text-secondary;
     flex-shrink: 0;
   }
 
@@ -109,14 +111,14 @@
     flex: 1;
     height: 24px;
     background: #e8eaf6;
-    border-radius: 12px;
+    border-radius: $radius-md;
     overflow: hidden;
   }
 
   .activity-bar {
     height: 100%;
-    background: linear-gradient(135deg, rgb(93, 237, 245) 0%, rgb(29, 58, 138) 100%);
-    border-radius: 12px;
+    background: linear-gradient(135deg, $cyan-light 0%, $navy 100%);
+    border-radius: $radius-md;
     min-width: 4px;
     transition: width 0.5s ease;
   }
@@ -125,7 +127,7 @@
     width: 30px;
     text-align: right;
     font-weight: 600;
-    color: rgb(29, 58, 138);
+    color: $navy;
     flex-shrink: 0;
   }
 }

@@ -1,5 +1,6 @@
-@import url("https://fonts.googleapis.com/css2?family=Akronim&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap");
+@use 'variables' as *;
+@use 'animations';
+
 .newLandingPage_container {
   margin: 0;
   padding: 0;
@@ -9,15 +10,25 @@
   .ctaVideo_container {
     width: 100%;
     height: 90vh;
+    overflow: hidden;
+
+    @media (max-width: $bp-md) {
+      height: 60vh;
+    }
+
+    @media (max-width: $bp-sm) {
+      height: 45vh;
+    }
 
     .newLandingPage_cta_video {
       width: 100%;
-      height: auto;
+      height: 100%;
+      object-fit: cover;
     }
   }
 
   .cta_separate_bar {
-    border: solid rgb(31, 64, 140);
+    border: solid $navy;
     margin: 0;
     width: 100%;
     height: 15vh;
@@ -25,22 +36,42 @@
     display: flex;
     align-items: center;
     position: relative;
-    background: rgb(31, 62, 140);
+    background: $navy;
+    box-shadow: none;
 
-    box-shadow: 0 !important;
+    @media (max-width: $bp-md) {
+      height: 10vh;
+    }
+
+    @media (max-width: $bp-sm) {
+      height: 8vh;
+    }
+
     .cta_text_container {
       display: flex;
       white-space: nowrap;
       animation: trainloop 65s linear infinite;
       gap: 15%;
 
+      @media (max-width: $bp-md) { gap: 10%; }
+      @media (max-width: $bp-sm) { gap: 8%; }
+
       .carousel_options {
         font-size: 2.5em;
         color: white;
-        font-family: "akronim", sans-serif;
+        font-family: $font-accent;
+
+        @media (max-width: $bp-md) {
+          font-size: 1.8em;
+        }
+
+        @media (max-width: $bp-sm) {
+          font-size: 1.3em;
+        }
       }
+
       .carousel_options:hover {
-        color: #06b6d4;
+        color: $cyan-dark;
         transform: translateY(-10px);
         transition: all 0.3s ease-in-out;
         cursor: pointer;
@@ -60,9 +91,16 @@
   .cta_hero_logo_container {
     display: flex;
     flex-direction: row;
-    background: linear-gradient(180deg, rgb(32, 63, 140) 0%, #06b6d4 100%);
+    background: $brand-gradient-vertical;
     height: 75vh;
     padding-top: 150px;
+
+    @media (max-width: $bp-md) {
+      flex-direction: column;
+      height: auto;
+      padding-top: 60px;
+    }
+
     .hero-logo {
       width: 100%;
       max-width: 55rem;
@@ -75,11 +113,20 @@
 
       &:hover {
         transform: translateY(-5px);
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+        box-shadow: $shadow-md;
       }
 
-      @media (max-width: 768px) {
+      @media (max-width: $bp-lg) {
+        max-width: 40rem;
+        padding: 3rem;
+      }
+
+      @media (max-width: $bp-md) {
         max-width: 90%;
+        padding: 1rem;
+      }
+
+      @media (max-width: $bp-sm) {
         padding: 0.5rem;
       }
     }
@@ -88,38 +135,42 @@
       width: 100%;
       max-width: 1000px;
       margin: 0 auto;
-      padding: 3rem !important;
+      padding: 3rem;
       text-align: center;
-      border-radius: 100px !important;
-      background: #ffffff00 !important;
+      border-radius: 100px;
+      background: transparent;
 
-      @media (max-width: 768px) {
-        padding: 2rem 1rem !important;
+      @media (max-width: $bp-md) {
+        padding: 2rem 1rem;
+        border-radius: $radius-xl;
       }
     }
 
     .intro-heading {
-      font-family: "Abril Fatface", sans-serif !important;
+      font-family: $font-display;
+      margin-bottom: 1.5rem;
+      color: white;
 
-      margin-bottom: 1.5rem !important;
-      color: rgb(255, 255, 255) !important;
+      @media (max-width: $bp-md) {
+        font-size: 1.5rem;
+      }
 
-      @media (max-width: 768px) {
-        font-size: 1.5rem !important;
+      @media (max-width: $bp-sm) {
+        font-size: 1.2rem;
       }
     }
 
     .intro-text {
-      color: #ffffff !important;
-      font-family: "DM Serif Display", serif !important;
-      font-weight: 400 !important;
-      font-style: normal !important;
-      font-size: 1rem !important;
-      line-height: 1.8 !important;
-      margin-bottom: 1.5rem !important;
-      text-align: left !important;
+      color: #ffffff;
+      font-family: $font-serif;
+      font-weight: 400;
+      font-style: normal;
+      font-size: 1rem;
+      line-height: 1.8;
+      margin-bottom: 1.5rem;
+      text-align: left;
 
-      @media (max-width: 768px) {
+      @media (max-width: $bp-md) {
         font-size: 1rem;
         text-align: center;
         line-height: 1.6;
@@ -130,91 +181,103 @@
       margin-top: 3rem;
 
       .cta-button {
-        padding: 1rem 2rem !important;
-        font-family: "Akronim", sans-serif !important;
-        letter-spacing: 0.2em !important;
+        padding: 1rem 2rem;
+        font-family: $font-accent;
+        letter-spacing: 0.2em;
         font-size: 1.1rem;
         font-weight: bold;
-        font-family: "Times New Roman", Times, serif;
         border-radius: 15px;
         transition: all 0.3s ease;
 
         &:hover {
           transform: translateY(-2px);
-          box-shadow: 0 4px 15px rgba(62, 211, 222, 0.4);
+          box-shadow: $shadow-glow;
         }
       }
     }
   }
-  .cta_login_title {
-    font-family: "Abril Fatface", sans-serif !important;
-    color: #ffffff !important;
-    text-align: center;
-    margin-top: 2rem;
-    font-size: 2.5rem;
-  }
+
   .how-it-works-section {
-    padding-top: 13em;
-    background: linear-gradient(0deg, rgb(32, 63, 140) 0%, #06b6d4 70%);
+    padding-top: 6em;
+    background: linear-gradient(0deg, $navy 0%, $cyan-dark 70%);
     width: 100%;
+
+    @media (max-width: $bp-md) {
+      padding-top: 3em;
+    }
   }
+
   .grid-layout-marketing {
     margin: 2em;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 2rem;
-    padding: 2rem !important;
-    background: #ffffff5d !important;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.36);
     border-radius: 40px;
 
-    @media (max-width: 1024px) {
+    @media (max-width: $bp-lg) {
       grid-template-columns: repeat(2, 1fr);
       gap: 1.5rem;
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: $bp-md) {
       grid-template-columns: 1fr;
       gap: 1rem;
+      margin: 1em;
     }
   }
+
   .section-title {
-    font-family: "Abril Fatface", sans-serif !important;
-    font-size: 4em !important;
+    font-family: $font-display;
+    font-size: 4em;
     text-align: center;
-    margin-bottom: 6rem !important;
-    color: rgb(32, 61, 160) !important;
+    margin-bottom: 6rem;
+    color: $navy;
+
+    @media (max-width: $bp-md) {
+      font-size: 2.5em;
+      margin-bottom: 3rem;
+    }
+
+    @media (max-width: $bp-sm) {
+      font-size: 1.8em;
+      margin-bottom: 2rem;
+    }
   }
+
   .grid-item {
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 2rem 1rem;
     text-align: center;
-    border-radius: 12px;
+    border-radius: $radius-md;
     border: 2px solid rgba(255, 255, 255, 0.145);
     background: linear-gradient(
       135deg,
-      rgba(62, 211, 222, 0.1),
-      rgba(32, 61, 160, 0.1)
+      rgba($cyan, 0.1),
+      rgba($navy, 0.1)
     );
     transition: all 0.3s ease;
     cursor: pointer;
 
     &:hover {
       transform: translateY(-8px);
-      box-shadow: 0 10px 30px rgba(62, 211, 222, 0.2);
-      border-color: rgb(62, 211, 222);
+      box-shadow: 0 10px 30px rgba($cyan, 0.2);
+      border-color: $cyan;
     }
 
     &:focus {
-      outline: 2px solid rgb(62, 211, 222);
+      outline: 2px solid $cyan;
       outline-offset: 2px;
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: $bp-md) {
       padding: 1.5rem 1rem;
     }
   }
+
   .process-icon {
     width: 5rem;
     height: 5rem;
@@ -224,56 +287,68 @@
     object-fit: cover;
 
     .grid-item:hover & {
-      transform: scale(15);
+      transform: scale(1.15);
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: $bp-md) {
       width: 4rem;
       height: 4rem;
     }
   }
-  .step-title {
-    color: rgb(32, 61, 160) !important;
-    font-size: 1.5rem !important;
-    font-weight: bold !important;
-    margin: 1rem 0 !important;
 
-    @media (max-width: 768px) {
-      font-size: 1.3rem !important;
+  .step-title {
+    color: $navy;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 1rem 0;
+
+    @media (max-width: $bp-md) {
+      font-size: 1.3rem;
     }
   }
 
   .step-description {
     width: 100%;
-    margin-top: 1rem !important;
-    padding: 1rem !important;
-    background-color: rgba(255, 255, 255, 0.7) !important;
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: rgba(255, 255, 255, 0.7);
 
     p {
-      font-family: "abril fatface", sans-serif !important;
+      font-family: $font-display;
       margin: 0;
       font-size: 1rem;
       line-height: 1.4;
       letter-spacing: 1px;
     }
   }
+
   .cta_login_title {
-    font-family: "Abril Fatface", sans-serif !important;
-    margin: 0 !important;
+    font-family: $font-display;
+    margin: 0;
     padding: 3em;
-    background-color: rgb(31, 64, 140);
-    box-shadow: none !important;
-    color: rgb(62, 211, 222, 0.8) !important;
+    background-color: $navy;
+    box-shadow: none;
+    color: rgba($cyan, 0.8);
     text-align: center;
     font-size: 3rem;
+
+    @media (max-width: $bp-md) {
+      font-size: 2rem;
+      padding: 2em 1em;
+    }
+
+    @media (max-width: $bp-sm) {
+      font-size: 1.5rem;
+      padding: 1.5em 0.75em;
+    }
   }
 
   .cta_login_container {
     background: linear-gradient(
       180deg,
-      rgb(32, 63, 140) 10%,
-      #06b6d4 51%,
-      rgb(29, 58, 138) 90%
+      $navy 10%,
+      $cyan-dark 51%,
+      $navy 90%
     );
     display: flex;
     flex-direction: row;
@@ -281,50 +356,143 @@
     align-items: center;
     width: auto;
     gap: 5em;
-    padding-bottom: 15em;
-    padding-right: 5em;
+    padding: 0 5em 15em;
+
+    @media (max-width: $bp-lg) {
+      flex-direction: column;
+      gap: 2em;
+      padding-right: 1em;
+      padding-left: 1em;
+      padding-bottom: 5em;
+    }
+
+    @media (max-width: $bp-md) {
+      gap: 1.5em;
+      padding-bottom: 3em;
+    }
+
+    @media (max-width: $bp-sm) {
+      gap: 1em;
+      padding: 0 0.5em 2em;
+    }
 
     .video_next_login {
       box-shadow: 10px 0 30px rgba(255, 255, 255, 0.478);
       width: 80%;
-      border-radius: 20px;
+      border-radius: $radius-xl;
+
+      @media (max-width: $bp-lg) {
+        width: 100%;
+      }
     }
 
     .logo_pic {
       width: 100%;
       height: 30vh;
+
+      @media (max-width: $bp-md) { height: 25vh; }
+      @media (max-width: $bp-sm) { height: 20vh; }
+
       object-fit: cover;
-      border-radius: 0 !important;
+      border-radius: 0;
       margin-bottom: 1rem;
     }
+
     .cta_login {
       background-color: rgba(255, 255, 255, 0.649);
       display: grid;
       border-radius: 40px;
       box-shadow: 0px 0px 55px rgba(255, 255, 255, 0.395);
-      width: 80vw;
-      height: 72vh;
+      width: 100%;
+      max-width: 500px;
+      min-height: 500px;
       margin: 0;
       justify-content: center;
       place-items: center;
+      padding: 2rem;
+      box-sizing: border-box;
+
+      @media (max-width: $bp-md) {
+        max-width: 100%;
+        padding: 1.5rem;
+        min-height: 400px;
+      }
+
+      @media (max-width: $bp-sm) {
+        min-height: auto;
+        padding: 1rem;
+        border-radius: $radius-xl;
+      }
 
       .signin-button {
-        width: 70%;
+        width: 100%;
+        margin: 1em;
+        max-width: 20em;
+
+        @media (max-width: $bp-md) { max-width: 100%; }
       }
 
       .cta_login_input {
-        width: 20em;
-        padding: 0 10px;
+        width: 100%;
+        max-width: 20em;
+
+        @media (max-width: $bp-md) { max-width: 100%; }
+
+        margin: 10px;
+        padding: 5px 20px;
+
+        .MuiInputBase-input {
+          text-align: center;
+        }
+
+        .MuiInputLabel-root {
+          width: 100%;
+          text-align: center;
+          transform-origin: center top;
+        }
       }
 
       .signin-form {
         border-radius: 20em;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
       }
     }
+
     .cta_reset_links {
       display: flex;
       gap: 1rem;
       margin-bottom: 5em;
+
+      @media (max-width: $bp-md) {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        margin-bottom: 2em;
+      }
+
+      @media (max-width: $bp-sm) {
+        margin-bottom: 1.5em;
+      }
     }
   }
+
+  // Scroll reveal (inside container for specificity)
+  .reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+
+    &.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .reveal-delay-0 { transition-delay: 0ms; }
+  .reveal-delay-1 { transition-delay: 100ms; }
+  .reveal-delay-2 { transition-delay: 200ms; }
+  .reveal-delay-3 { transition-delay: 300ms; }
 }

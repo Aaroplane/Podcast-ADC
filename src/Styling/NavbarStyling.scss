@@ -1,14 +1,21 @@
+@use 'variables' as *;
+
 .nav_bar {
   z-index: 1100;
-  box-shadow: none !important;
-background: rgb(30, 61, 138) !important;  
+  box-shadow: none;
+  background: $navy;
 
-  .dashboard_button{
-    padding: 4px !important;
+  &.nav_bar--scrolled {
+    background: rgba($navy, 0.85);
+    backdrop-filter: blur(10px);
   }
-  
+
+  .dashboard_button {
+    padding: $space-xs;
+  }
+
   .custom-toolbar {
-    padding-left: 0 !important;
+    padding-left: 0;
   }
 
   .logo_container {
@@ -16,7 +23,7 @@ background: rgb(30, 61, 138) !important;
     display: flex;
     align-items: center;
     margin-right: auto;
-    
+
     &:hover {
       opacity: 0.8;
       transition: opacity 0.2s ease;
@@ -28,11 +35,11 @@ background: rgb(30, 61, 138) !important;
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    gap: 20px;
+    gap: clamp(10px, 2vw, 20px);
 
     .nav_links {
       display: flex;
-      gap: 15px;
+      gap: clamp(8px, 1.5vw, 15px);
       align-items: center;
     }
 
@@ -40,11 +47,11 @@ background: rgb(30, 61, 138) !important;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: aliceblue;
+      color: white;
       white-space: nowrap;
-      margin-left: 24px;
-      padding: 8px 16px ;
-      border-radius: 4px;
+      margin-left: $space-lg;
+      padding: $space-sm $space-md;
+      border-radius: $radius-sm;
       transition: background-color 0.2s ease;
 
       &:hover {
@@ -58,6 +65,10 @@ background: rgb(30, 61, 138) !important;
       gap: 10px;
       margin-left: auto;
     }
+  }
+
+  .nav_auth_btn {
+    padding: 0.4em 2em;
   }
 
   .img_logo {
@@ -77,8 +88,8 @@ background: rgb(30, 61, 138) !important;
 
 .mobile_drawer_container {
   .MuiDrawer-paper {
-    width: 280px;
-    background-color: rgba(68, 215, 215, 0.808);
+    width: min(280px, 80vw);
+    background-color: rgba($cyan, 0.9);
     color: white;
   }
 }
@@ -91,7 +102,7 @@ background: rgb(30, 61, 138) !important;
   .drawer_header {
     display: flex;
     justify-content: flex-end;
-    padding: 8px;
+    padding: $space-sm;
     border-bottom: 1px solid rgba(255, 255, 255, 0.12);
   }
 
@@ -114,31 +125,26 @@ background: rgb(30, 61, 138) !important;
     padding: 20px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: $radius-md;
 
     .mobile_auth_btn {
-      margin-bottom: 8px;
+      margin-bottom: $space-sm;
     }
   }
 }
 
-@media (max-width: 768px) {
+@media (max-width: $bp-md) {
   .nav_bar {
     .img_logo {
-      width: 5em;
+      width: 4.5em;
     }
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: $bp-sm) {
   .nav_bar {
     .img_logo {
       width: 4em;
     }
   }
 }
-
-body {
-  padding-top: 0;
-}
-

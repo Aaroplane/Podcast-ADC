@@ -24,23 +24,16 @@ export default function NavBar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-  const [changeColor, setChangeColor] = useState(false);
-
-  const handleChangeColor = () => {
-    if (window.scrollY >= 90) {
-      setChangeColor(true);
-    } else {
-      setChangeColor(false);
-    }
-  };
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    window.addEventListener("scroll", handleChangeColor);
-
-    return () => {
-      window.removeEventListener("scroll", handleChangeColor);
+    const handleScroll = () => {
+      setScrolled(window.scrollY >= 90);
     };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -123,12 +116,7 @@ export default function NavBar() {
     <>
       <AppBar
         position="fixed"
-        className="nav_bar"
-        sx={{
-          background: changeColor
-            ? "rgba(32, 62, 160, 0.75) !important"
-            : undefined,
-        }}
+        className={`nav_bar ${scrolled ? "nav_bar--scrolled" : ""}`}
       >
         <Toolbar className="custom-toolbar">
           <Box component={Link} to="/" className="logo_container">
@@ -173,7 +161,7 @@ export default function NavBar() {
                     <StyledButton
                       LinkComponent={Link}
                       to={`/users/${user.id}/userdashboard`}
-                      sx={{ padding: "0.4em 2em " }}
+                      className="nav_auth_btn"
                       fullWidth
                     >
                       Dashboard
@@ -181,7 +169,7 @@ export default function NavBar() {
                     <StyledButton
                       LinkComponent={Link}
                       to={`/users/${user.id}/profile`}
-                      sx={{ padding: "0.4em 2em " }}
+                      className="nav_auth_btn"
                       fullWidth
                     >
                       Profile

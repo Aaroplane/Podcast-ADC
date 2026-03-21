@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { StyledButton, StyledTypography, StyledBox } from "../../Styling/theme";
+import { StyledButton } from "../../Styling/theme";
 import "../../Styling/SignUpStyling.scss";
-import { InputAdornment, IconButton, Alert, Paper } from "@mui/material";
+import { InputAdornment, IconButton, Alert } from "@mui/material";
 import { Visibility, VisibilityOff, Email, Lock } from "@mui/icons-material";
 import TextField from "@mui/material/TextField";
 import api from "../../utils/api";
@@ -85,9 +85,9 @@ export default function SignUp() {
 
   return (
     <div className="signup-page">
-      <Paper className="paper-container">
+      <div className="paper-container">
         <div className="form-header">
-          <StyledTypography className="form-title">Join the Chit-Chat Community</StyledTypography>
+          <h2 className="form-title">Join the Chit-Chat Community</h2>
           <div className="signup-subtitle">
             Fill in your details to get started
           </div>
@@ -97,14 +97,13 @@ export default function SignUp() {
           <Alert
             severity="error"
             className="error-alert"
-            sx={{ mb: 3, borderRadius: "12px" }}
           >
             {error}
           </Alert>
         )}
 
         <form onSubmit={handleSubmit(onSubmit)} className="form">
-          <StyledBox>
+          <div className="form-field">
             <TextField
               fullWidth
               label="First Name"
@@ -119,9 +118,9 @@ export default function SignUp() {
               error={!!errors.first_name}
               helperText={errors.first_name?.message || ""}
             />
-          </StyledBox>
+          </div>
 
-          <StyledBox>
+          <div className="form-field">
             <TextField
               fullWidth
               label="Last Name"
@@ -136,9 +135,9 @@ export default function SignUp() {
               error={!!errors.last_name}
               helperText={errors.last_name?.message || ""}
             />
-          </StyledBox>
+          </div>
 
-          <StyledBox>
+          <div className="form-field">
             <TextField
               fullWidth
               type="email"
@@ -164,9 +163,9 @@ export default function SignUp() {
                 },
               }}
             />
-          </StyledBox>
+          </div>
 
-          <StyledBox>
+          <div className="form-field">
             <TextField
               fullWidth
               label="Username"
@@ -187,9 +186,9 @@ export default function SignUp() {
               error={!!errors.username}
               helperText={errors.username?.message || ""}
             />
-          </StyledBox>
+          </div>
 
-          <StyledBox>
+          <div className="form-field">
             <TextField
               fullWidth
               type={showPassword ? "text" : "password"}
@@ -233,9 +232,9 @@ export default function SignUp() {
                 },
               }}
             />
-          </StyledBox>
+          </div>
 
-          <StyledBox>
+          <div className="form-field">
             <TextField
               fullWidth
               type={showConfirmPassword ? "text" : "password"}
@@ -270,7 +269,7 @@ export default function SignUp() {
                 },
               }}
             />
-          </StyledBox>
+          </div>
 
           <StyledButton
             type="submit"
@@ -288,12 +287,11 @@ export default function SignUp() {
             variant="outlined"
             className="signin-button"
             onClick={() => navigate("/login")}
-            sx={{ width: "30%" }}
           >
             Sign In
           </StyledButton>
         </div>
-      </Paper>
+      </div>
     </div>
   );
 }
